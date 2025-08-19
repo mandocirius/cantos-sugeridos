@@ -11,7 +11,7 @@ function authenticate(request: Request) {
   return null;
 }
 
-export async function PUT(request: Request, { params }: { params: { id: string } }) {
+export async function PUT(request: any, { params }: { params: { id: string } }) {
   const authError = authenticate(request);
   if (authError) {
     return authError;
