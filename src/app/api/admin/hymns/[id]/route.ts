@@ -11,13 +11,7 @@ function authenticate(request: Request) {
   return null;
 }
 
-interface RouteParams {
-  params: {
-    id: string;
-  };
-}
-
-export async function PUT(request: Request, { params }: RouteParams) {
+export async function PUT(request: Request, { params }: { params: { id: string } }) {
   const authError = authenticate(request);
   if (authError) {
     return authError;
