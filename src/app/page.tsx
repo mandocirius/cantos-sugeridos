@@ -67,7 +67,7 @@ export default function Home() {
         }
         const data = await res.json();
         setLiturgyData(data);
-      } catch (e: any) {
+      } catch (e: unknown) {
         setError(e.message);
         console.error("Failed to fetch liturgy data:", e);
       }
