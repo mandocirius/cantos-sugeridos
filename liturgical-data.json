@@ -1,0 +1,33 @@
+{
+  "date": "2025-08-24",
+  "readings": [
+    {
+      "type_en": "First Reading",
+      "type_es": "Primera Lectura",
+      "reference": "Isaiah 55:10-11",
+      "text_en": "Thus says the LORD: Just as from the heavens the rain and snow come down and do not return there till they have watered the earth, making it fertile and fruitful, giving seed to the one who sows and bread to the one who eats, so shall my word be that goes forth from my mouth; my word shall not return to me void, but shall do my will, achieving the end for which I sent it.",
+      "text_es": "Así dice el SEÑOR: Así como del cielo descienden la lluvia y la nieve y no vuelven allá hasta que han regado la tierra, haciéndola fértil y fructífera, dando semilla al que siembra y pan al que come, así será mi palabra que sale de mi boca; mi palabra no volverá a mí vacía, sino que hará mi voluntad, logrando el fin para el cual la envié."
+    },
+    {
+      "type_en": "Responsorial Psalm",
+      "type_es": "Salmo Responsorial",
+      "reference": "Psalm 65:10, 11, 12-13, 14",
+      "text_en": "R. The seed that falls on good ground will yield a harvest.\nYou have visited the land and watered it, greatly enriching it.\nThe stream of God is filled with water; you supply the grain.\n\nTruly, thus you have prepared it:\nyou have watered its furrows, leveling its ridges;\nwith showers you soften it, blessing its growth.\n\nYou have crowned the year with your bounty,\nand your paths overflow with a rich harvest;\nthe untilled meadows overflow with it,\nand rejoicing clothes the hills.\n\nThe fields are clothed with flocks,\nand the valleys are mantled with wheat;\nthey shout for joy and sing.",
+      "text_es": "R. La semilla que cae en buena tierra dará cosecha.\nHas visitado la tierra y la has regado, enriqueciéndola en gran manera.\nEl arroyo de Dios está lleno de agua; tú provees el grano.\n\nVerdaderamente, así la has preparado:\nhas regado sus surcos, nivelado sus lomos;\ncon lluvias la ablandas, bendiciendo su crecimiento.\n\nHas coronado el año con tu bondad,\ny tus sendas desbordan de rica cosecha;\nlos prados sin cultivar desbordan de ella,\ny la alegría viste las colinas.\n\nLos campos se visten de rebaños,\ny los valles se cubren de trigo;\ngritan de alegría y cantan."
+    },
+    {
+      "type_en": "Second Reading",
+      "type_es": "Segunda Lectura",
+      "reference": "Romans 8:18-23",
+      "text_en": "Brothers and sisters: I consider that the sufferings of this present time are as nothing compared with the glory to be revealed to us. For creation awaits with eager expectation the revelation of the children of God; for creation was made subject to futility, not of its own accord but because of him who subjected it, in hope that creation itself would be set free from slavery to corruption and share in the glorious freedom of the children of God. We know that all creation groans and is in labor pains even until now; and not only creation, but we ourselves, who have the firstfruits of the Spirit, we also groan within ourselves as we await the adoption, the redemption of our bodies.",
+      "text_es": "Hermanos y hermanas: Considero que los sufrimientos de este tiempo presente no son nada comparados con la gloria que se nos ha de revelar. Porque la creación espera con impaciencia la revelación de los hijos de Dios; porque la creación fue sometida a la vanidad, no por su propia voluntad, sino por causa de aquel que la sometió, con la esperanza de que la creación misma sería liberada de la esclavitud de la corrupción y participaría de la gloriosa libertad de los hijos de Dios. Sabemos que toda la creación gime y sufre dolores de parto hasta ahora; y no solo la creación, sino también nosotros mismos, que tenemos las primicias del Espíritu, también gemimos dentro de nosotros mismos mientras esperamos la adopción, la redención de nuestros cuerpos."
+    },
+    {
+      "type_en": "Gospel",
+      "type_es": "Evangelio",
+      "reference": "Matthew 13:1-23",
+      "text_en": "Gospel text placeholder.",
+      "text_es": "Marcador de posición para el texto del Evangelio."
+    }
+  ]
+}
