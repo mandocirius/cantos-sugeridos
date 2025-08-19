@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import initializedDbPromise, { Hymn } from '@/lib/db'; // Import the promise
 
 const ADMIN_API_KEY = process.env.ADMIN_API_KEY || 'your_secret_admin_key';
@@ -11,7 +11,7 @@ function authenticate(request: Request) {
   return null;
 }
 
-export async function PUT(request: any, { params }: { params: { id: string } }) {
+export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
   const authError = authenticate(request);
   if (authError) {
     return authError;
