@@ -5,6 +5,9 @@ import { v4 as uuidv4 } from 'uuid';
 interface Comment {
   id: string;
   author: string;
+  email?: string;
+  countryCode?: string;
+  phoneNumber?: string;
   text: string;
   timestamp: number;
 }
@@ -29,10 +32,13 @@ export async function GET() {
 
 export async function POST(request: Request) {
   const db = await initializedDbPromise; // Await the promise
-  const { author, text } = await request.json();
+  const { author, email, countryCode, phoneNumber, text } = await request.json();
   const newComment: Comment = {
     id: uuidv4(),
     author,
+    email,
+    countryCode,
+    phoneNumber,
     text,
     timestamp: Date.now(),
   };
@@ -40,6 +46,27 @@ export async function POST(request: Request) {
   await db.read();
   db.data.comments.push(newComment);
   await db.write();
+
+  // Send email notification
+  try {
+    const adminEmail = process.env.ADMIN_EMAIL;
+    if (adminEmail) {
+      await fetch(`${request.nextUrl.origin}/api/send-email`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          to: adminEmail,
+          subject: 'Nuevo Comentario en Cantos Sugeridos',
+          html: `Nuevo comentario de ${newComment.author}`,
+        }),
+      });
+      console.log('Email notification sent for new comment.');
+    } else {
+      console.warn('ADMIN_EMAIL is not set. Email notification for new comment skipped.');
+    }
+  } catch (emailError) {
+    console.error('Failed to send email notification for new comment:', emailError);
+  }
 
   return NextResponse.json(newComment, { status: 201 });
 }

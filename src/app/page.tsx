@@ -1,8 +1,10 @@
 "use client";
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import ReadingCard from './components/ReadingCard';
 import HymnCard from './components/HymnCard';
+import { countries, Country } from '@/lib/countryData';
 
 interface Reading {
   type: string;
@@ -28,16 +30,23 @@ interface LiturgyData {
 interface Comment {
   id: string;
   author: string;
+  email?: string; // New field
+  countryCode?: string; // New field
+  phoneNumber?: string; // New field
   text: string;
   timestamp: number;
 }
 
 export default function Home() {
+  const router = useRouter();
   const [liturgyData, setLiturgyData] = useState<LiturgyData | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [lang, setLang] = useState<'en' | 'es'>('en');
   const [comments, setComments] = useState<Comment[]>([]);
   const [newCommentAuthor, setNewCommentAuthor] = useState('');
+  const [newCommentEmail, setNewCommentEmail] = useState(''); // New state for email
+  const [newCommentCountryCode, setNewCommentCountryCode] = useState('+1'); // Default to +1
+  const [newCommentPhoneNumber, setNewCommentPhoneNumber] = useState(''); // New state for phone number
   const [newCommentText, setNewCommentText] = useState('');
 
   // Get today's date in YYYY-MM-DD format
@@ -100,8 +109,8 @@ export default function Home() {
 
   const handleCommentSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newCommentAuthor || !newCommentText) {
-      alert(lang === 'es' ? 'Por favor, complete todos los campos de comentarios.' : 'Please fill in all comment fields.');
+    if (!newCommentAuthor || !newCommentEmail || !newCommentText) {
+      alert(lang === 'es' ? 'Por favor, complete todos los campos de comentarios (Nombre, Email, Comentario).': 'Please fill in all comment fields (Name, Email, Comment).');
       return;
     }
 
@@ -109,7 +118,13 @@ export default function Home() {
       const res = await fetch('/api/comments', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ author: newCommentAuthor, text: newCommentText }),
+        body: JSON.stringify({ 
+          author: newCommentAuthor,
+          email: newCommentEmail,
+          countryCode: newCommentCountryCode,
+          phoneNumber: newCommentPhoneNumber,
+          text: newCommentText
+        }),
       });
       if (res.ok) {
         setNewCommentAuthor('');
@@ -126,6 +141,24 @@ export default function Home() {
     } catch (error) {
       console.error('Error submitting comment:', error);
       alert(lang === 'es' ? 'Error al enviar comentario.' : 'Error submitting comment.');
+    }
+  };
+
+  const handleSubscribe = async () => {
+    try {
+      const res = await fetch('/api/stripe/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+      });
+      const data = await res.json();
+      if (data.url) {
+        router.push(data.url); // Redirect to Stripe Checkout
+      } else {
+        alert(lang === 'es' ? 'Error al iniciar el proceso de pago.' : 'Error initiating payment process.');
+      }
+    } catch (error) {
+      console.error('Error during subscription:', error);
+      alert(lang === 'es' ? 'Error al iniciar el proceso de pago.' : 'Error initiating payment process.');
     }
   };
 
@@ -265,6 +298,33 @@ export default function Home() {
             onChange={(e) => setNewCommentAuthor(e.target.value)}
             className="w-full p-2 border rounded dark:bg-gray-600 dark:border-gray-500 dark:text-white"
           />
+          <input
+            type="email"
+            placeholder={lang === 'es' ? 'Tu correo electrónico' : 'Your Email'}
+            value={newCommentEmail}
+            onChange={(e) => setNewCommentEmail(e.target.value)}
+            className="w-full p-2 border rounded dark:bg-gray-600 dark:border-gray-500 dark:text-white"
+          />
+          <div className="flex space-x-2">
+            <select
+              value={newCommentCountryCode}
+              onChange={(e) => setNewCommentCountryCode(e.target.value)}
+              className="p-2 border rounded dark:bg-gray-600 dark:border-gray-500 dark:text-white"
+            >
+              {countries.map((country) => (
+                <option key={country.code} value={country.dial_code}>
+                  {country.flag} {country.dial_code}
+                </option>
+              ))}
+            </select>
+            <input
+              type="tel"
+              placeholder={lang === 'es' ? 'Número de teléfono' : 'Phone Number'}
+              value={newCommentPhoneNumber}
+              onChange={(e) => setNewCommentPhoneNumber(e.target.value)}
+              className="w-full p-2 border rounded dark:bg-gray-600 dark:border-gray-500 dark:text-white"
+            />
+          </div>
           <textarea
             placeholder={lang === 'es' ? 'Tu comentario' : 'Your Comment'}
             value={newCommentText}
@@ -288,11 +348,12 @@ export default function Home() {
         </h2>
         <p className="text-lg text-gray-700 dark:text-gray-200 mb-4">
           {lang === 'es' ?
-            'Si deseas colaborar con este proyecto para que llegue a más hermanos, puedes suscribirte donando $0.50 centavos de dólar. ¡Gracias por tu colaboración y que Dios te bendiga y te lo multiplique!' :
+            'Si deseas colaborar con este proyecto para que llegue a más hermanos, puedes suscribirte donando $0.50 centavos de dólar al mes. ¡Gracias por tu colaboración y que Dios te bendiga y te lo multiplique!' :
             'If you wish to collaborate with this project so that it reaches more brothers and sisters, you can subscribe by donating $0.50. Thank you for your collaboration, and may God bless you and multiply it!'
           }
         </p>
         <button
+          onClick={handleSubscribe}
           className="bg-green-600 text-white text-xl font-bold py-3 px-8 rounded-full hover:bg-green-700 transition duration-300 ease-in-out transform hover:scale-105 shadow-lg"
         >
           {lang === 'es' ? 'Suscribirse y Donar $0.50' : 'Subscribe and Donate $0.50'}
