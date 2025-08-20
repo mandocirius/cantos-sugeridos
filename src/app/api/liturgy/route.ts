@@ -1,8 +1,5 @@
 import { NextResponse } from 'next/server';
-import path from 'path';
-import { promises as fs } from 'fs';
-import axios from 'axios';
-import * as cheerio from 'cheerio';
+
 import initializedDbPromise, { Reading, Hymn } from '@/lib/db'; // Import the promise
 
 // Simple in-memory cache

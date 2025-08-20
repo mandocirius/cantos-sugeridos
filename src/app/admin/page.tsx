@@ -27,7 +27,7 @@ interface Hymn {
   pdf_url: string;
 }
 
-const ADMIN_API_KEY = process.env.NEXT_PUBLIC_ADMIN_API_KEY || 'your_secret_admin_key';
+
 
 export default function AdminPage() {
   const [apiKey, setApiKey] = useState('');
@@ -56,7 +56,7 @@ export default function AdminPage() {
       fetchReadings();
       fetchHymns();
     }
-  }, [authenticated]);
+  }, [authenticated, fetchReadings, fetchHymns]);
 
   const checkAuth = async (key: string) => {
     try {

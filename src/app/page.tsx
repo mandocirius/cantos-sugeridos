@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import ReadingCard from './components/ReadingCard';
 import HymnCard from './components/HymnCard';
-import { countries, Country } from '@/lib/countryData';
+import { countries } from '@/lib/countryData';
 
 interface Reading {
   type: string;
