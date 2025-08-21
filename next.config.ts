@@ -1,6 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  productionBrowserSourceMaps: true,
   typescript: {
     // !! PELIGRO !!
     // Permite que la aplicación se construya aunque haya errores de TypeScript.
