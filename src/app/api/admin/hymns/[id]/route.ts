@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import initializedDbPromise, { Hymn } from '@/lib/db'; // Import the promise
+import initializedDbPromise, { Hymn } from '@/lib/db';
 
 const ADMIN_API_KEY = process.env.ADMIN_API_KEY || 'your_secret_admin_key';
 
@@ -17,7 +17,7 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
     return authError;
   }
 
-  const db = await initializedDbPromise; // Await the promise
+  const db = await initializedDbPromise;
   const { id } = params;
   const updatedHymn: Hymn = await request.json();
 
@@ -39,7 +39,7 @@ export async function DELETE(request: Request, { params }: { params: { id: strin
     return authError;
   }
 
-  const db = await initializedDbPromise; // Await the promise
+  const db = await initializedDbPromise;
   const { id } = params;
 
   await db.read();
