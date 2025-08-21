@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { useState, useEffect, useCallback } from 'react';
 
@@ -16,6 +16,7 @@ interface Reading {
 
 interface Hymn {
   id?: string;
+  date?: string; // Make date optional as it was missing in some initializations
   title_en: string;
   title_es: string;
   liturgical_moment: string;
@@ -27,8 +28,6 @@ interface Hymn {
   pdf_url: string;
 }
 
-
-
 export default function AdminPage() {
   const [apiKey, setApiKey] = useState('');
   const [authenticated, setAuthenticated] = useState(false);
@@ -38,27 +37,13 @@ export default function AdminPage() {
     date: '', type_en: '', type_es: '', title_en: '', title_es: '', reference: '', text_en: '', text_es: ''
   });
   const [newHymn, setNewHymn] = useState<Hymn>({
-    date: '', title_en: '', title_es: '', liturgical_moment: '', lyrics_en: '', lyrics_es: '', chords_en: '', chords_es: '', video_url: '', pdf_url: ''
+    title_en: '', title_es: '', liturgical_moment: '', lyrics_en: '', lyrics_es: '', chords_en: '', chords_es: '', video_url: '', pdf_url: ''
   });
   const [editingReading, setEditingReading] = useState<Reading | null>(null);
   const [editingHymn, setEditingHymn] = useState<Hymn | null>(null);
 
-  useEffect(() => {
-    const storedApiKey = localStorage.getItem('adminApiKey');
-    if (storedApiKey) {
-      setApiKey(storedApiKey);
-      checkAuth(storedApiKey);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (authenticated) {
-      fetchReadings();
-      fetchHymns();
-    }
-  }, [authenticated, fetchReadings, fetchHymns]);
-
-  const checkAuth = async (key: string) => {
+  // FUNCTION DECLARATIONS MOVED UP
+  const checkAuth = useCallback(async (key: string) => {
     try {
       const res = await fetch('/api/admin/readings', {
         headers: { 'x-api-key': key }
@@ -75,11 +60,7 @@ export default function AdminPage() {
       setAuthenticated(false);
       alert('Authentication check failed. Server error.');
     }
-  };
-
-  const handleLogin = () => {
-    checkAuth(apiKey);
-  };
+  }, []); // checkAuth does not depend on any state, so its dependency array is empty
 
   const fetchReadings = useCallback(async () => {
     try {
@@ -113,6 +94,26 @@ export default function AdminPage() {
     }
   }, [apiKey]);
 
+  // USE EFFECT HOOKS NOW COME AFTER FUNCTION DECLARATIONS
+  useEffect(() => {
+    const storedApiKey = localStorage.getItem('adminApiKey');
+    if (storedApiKey) {
+      setApiKey(storedApiKey);
+      checkAuth(storedApiKey);
+    }
+  }, [checkAuth]);
+
+  useEffect(() => {
+    if (authenticated) {
+      fetchReadings();
+      fetchHymns();
+    }
+  }, [authenticated, fetchReadings, fetchHymns]);
+
+  const handleLogin = () => {
+    checkAuth(apiKey);
+  };
+
   const handleAddReading = async () => {
     try {
       const res = await fetch('/api/admin/readings', {
@@ -134,11 +135,13 @@ export default function AdminPage() {
   const handleUpdateReading = async () => {
     if (!editingReading?.id) return;
     try {
-      const res = await fetch(`/api/admin/readings/${editingReading.id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json', 'x-api-key': apiKey },
-        body: JSON.stringify(editingReading),
-      });
+      const res = await fetch(`/api/admin/readings/${editingReading.id}`,
+        {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json', 'x-api-key': apiKey },
+          body: JSON.stringify(editingReading),
+        }
+      );
       if (res.ok) {
         setEditingReading(null);
         fetchReadings();
@@ -153,10 +156,12 @@ export default function AdminPage() {
   const handleDeleteReading = async (id: string) => {
     if (!confirm('Are you sure you want to delete this reading?')) return;
     try {
-      const res = await fetch(`/api/admin/readings/${id}`, {
-        method: 'DELETE',
-        headers: { 'x-api-key': apiKey },
-      });
+      const res = await fetch(`/api/admin/readings/${id}`,
+        {
+          method: 'DELETE',
+          headers: { 'x-api-key': apiKey },
+        }
+      );
       if (res.ok) {
         fetchReadings();
       } else {
@@ -188,11 +193,13 @@ export default function AdminPage() {
   const handleUpdateHymn = async () => {
     if (!editingHymn?.id) return;
     try {
-      const res = await fetch(`/api/admin/hymns/${editingHymn.id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json', 'x-api-key': apiKey },
-        body: JSON.stringify(editingHymn),
-      });
+      const res = await fetch(`/api/admin/hymns/${editingHymn.id}`,
+        {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json', 'x-api-key': apiKey },
+          body: JSON.stringify(editingHymn),
+        }
+      );
       if (res.ok) {
         setEditingHymn(null);
         fetchHymns();
@@ -207,10 +214,12 @@ export default function AdminPage() {
   const handleDeleteHymn = async (id: string) => {
     if (!confirm('Are you sure you want to delete this hymn?')) return;
     try {
-      const res = await fetch(`/api/admin/hymns/${id}`, {
-        method: 'DELETE',
-        headers: { 'x-api-key': apiKey },
-      });
+      const res = await fetch(`/api/admin/hymns/${id}`,
+        {
+          method: 'DELETE',
+          headers: { 'x-api-key': apiKey },
+        }
+      );
       if (res.ok) {
         fetchHymns();
       } else {
