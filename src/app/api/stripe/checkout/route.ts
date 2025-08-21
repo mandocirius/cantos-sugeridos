@@ -13,6 +13,8 @@ export async function POST(req: NextRequest) {
     // Make sure to create this product and price in your Stripe Dashboard.
     const priceId = 'price_1RsE8CAhajhc2ULmiNjcj1yd'; // REPLACE WITH YOUR ACTUAL STRIPE PRICE ID FOR MONTHLY SUBSCRIPTION
 
+    const siteURL = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+
     const session = await stripe.checkout.sessions.create({
       mode: 'subscription',
       line_items: [
@@ -22,8 +24,8 @@ export async function POST(req: NextRequest) {
         },
       ],
       // These URLs will be redirected to after successful payment or cancellation
-      success_url: `${req.nextUrl.origin}/success`, // Replace with your actual success page URL
-      cancel_url: `${req.nextUrl.origin}/cancel`,   // Replace with your actual cancel page URL
+      success_url: `${siteURL}/success`,
+      cancel_url: `${siteURL}/cancel`,
       automatic_tax: { enabled: true }, // Enable automatic tax calculation if needed
     });
 

@@ -204,6 +204,15 @@
       "phoneNumber": "59304634",
       "text": "saludos",
       "timestamp": 1755661062474
+    },
+    {
+      "id": "7f724dd7-70f6-4b46-8ed7-49bf0e890d30",
+      "author": "Antonio",
+      "email": "infomipase@gmail.com",
+      "countryCode": "+502",
+      "phoneNumber": "43889765",
+      "text": "Bendiciones",
+      "timestamp": 1755739019583
     }
   ]
 }
