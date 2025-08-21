@@ -70,7 +70,7 @@ export default function Home() {
   useEffect(() => {
     const fetchLiturgyData = async () => {
       try {
-        const res = await fetch(`http://localhost:3000/api/liturgy?lang=${lang}&date=${selectedDate}`);
+        const res = await fetch(`/api/liturgy?lang=${lang}&date=${selectedDate}`);
         if (!res.ok) {
           throw new Error(`HTTP error! status: ${res.status}`);
         }
