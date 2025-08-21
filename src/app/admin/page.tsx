@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 interface Reading {
   id?: string;
@@ -81,7 +81,7 @@ export default function AdminPage() {
     checkAuth(apiKey);
   };
 
-  const fetchReadings = async () => {
+  const fetchReadings = useCallback(async () => {
     try {
       const res = await fetch('/api/admin/readings', {
         headers: { 'x-api-key': apiKey }
@@ -95,9 +95,9 @@ export default function AdminPage() {
     } catch (error) {
       console.error('Error fetching readings:', error);
     }
-  };
+  }, [apiKey]);
 
-  const fetchHymns = async () => {
+  const fetchHymns = useCallback(async () => {
     try {
       const res = await fetch('/api/admin/hymns', {
         headers: { 'x-api-key': apiKey }
@@ -111,7 +111,7 @@ export default function AdminPage() {
     } catch (error) {
       console.error('Error fetching hymns:', error);
     }
-  };
+  }, [apiKey]);
 
   const handleAddReading = async () => {
     try {
